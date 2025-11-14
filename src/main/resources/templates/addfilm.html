@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Film</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="mb-4">Add New Film</h1>
+
+    <form th:action="@{/add}" th:object="${film}" method="post">
+
+        <div class="mb-3">
+            <label for="title" class="form-label">Title:</label>
+            <input type="text" th:field="*{title}" class="form-control" id="title" placeholder="Enter film title" required>
+        </div>
+
+        <!-- Description -->
+        <div class="mb-3">
+            <label for="description" class="form-label">Description:</label>
+            <textarea th:field="*{description}" class="form-control" id="description" placeholder="Enter film description" required></textarea>
+        </div>
+
+        <!-- Release Year -->
+        <div class="mb-3">
+            <label for="anneapp" class="form-label">Release Year:</label>
+            <input type="number" th:field="*{anneapp}" class="form-control" id="anneapp"
+                   placeholder="Enter release year" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="categorie" class="form-label">Category:</label>
+            <select th:field="*{categorie}" id="categorie" class="form-select" required>
+                <option value="">-- Select Category --</option>
+
+                <option th:each="c : ${categories}"
+                        th:value="${c.id}"
+                        th:text="${c.nom}">
+                </option>
+            </select>
+        </div>
+
+
+        <button type="submit" class="btn btn-success">Add Film</button>
+
+    </form>
+</div>
+</body>
+</html>

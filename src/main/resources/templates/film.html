@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Film List</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-3">
+        <a th:href="@{/addfilm}" class="btn btn-primary mb-3">Add New Film</a>
+    </div>
+
+    <div class="container mt-5">
+        <h1 class="mb-4">Film List</h1>
+        <table class="table table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Release Year</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="f : ${film}">
+                    <td th:text="${f.id}"></td>
+                    <td th:text="${f.title}"></td>
+                    <td th:text="${f.description}"></td>
+                    <td th:text="${f.anneapp}"></td>
+                    <td>
+                        <a onclick="return confirm('Êtes-vous sûr ?')"
+                           th:href="@{/delete(id=${f.id})}"
+                           class="btn btn-danger btn-sm">
+                           Supprimer
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
