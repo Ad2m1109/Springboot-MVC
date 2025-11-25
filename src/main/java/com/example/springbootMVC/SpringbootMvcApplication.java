@@ -7,35 +7,53 @@ import org.springframework.context.annotation.Bean;
 
 import com.example.springbootMVC.model.Category;
 import com.example.springbootMVC.model.Film;
-import com.example.springbootMVC.repository.CategoryRepository;
-import com.example.springbootMVC.repository.FilmRepository;
+import com.example.springbootMVC.service.CategoryService;
+import com.example.springbootMVC.service.FilmService;
+
+import lombok.extern.slf4j.Slf4j;
 
 @SpringBootApplication
+@Slf4j
 public class SpringbootMvcApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringbootMvcApplication.class, args);
 	}
-	//@Bean
-	CommandLineRunner Start(FilmRepository filmRepository,
-	CategoryRepository categoryRepository)
-	{
-	return args -> {
-	Category c1=new Category("comedie");
-	Category c2=new Category("Horreur");
-	Category c3=new Category("Action");
-	categoryRepository.save(c1);
-	categoryRepository.save(c2);
-	categoryRepository.save(c3);
-	Film f1=new Film("harvard","film des anneés 60",1962,c1);
-	Film f2=new Film("malcom","film des anneés 80",1980,c2);
-	Film f3=new Film("Brusly","film des anneés 90",1980,c3);
-	filmRepository.save(f1);
-	filmRepository.save(f2);
-	filmRepository.save(f2);
-	filmRepository.save(f3);
-	filmRepository.findAll().forEach(f->System.out.println(f));
 
-};
-} 
+	/**
+	 * Initialize database with sample data on application startup.
+	 * Uses service layer for proper business logic and validation.
+	 */
+	@Bean
+	CommandLineRunner initData(FilmService filmService, CategoryService categoryService) {
+		return args -> {
+			log.info("Starting database initialization...");
+
+			// Create categories
+			Category c1 = new Category("Comedie");
+			Category c2 = new Category("Horreur");
+			Category c3 = new Category("Action");
+
+			categoryService.saveCategory(c1);
+			categoryService.saveCategory(c2);
+			categoryService.saveCategory(c3);
+			log.info("Created {} categories", 3);
+
+			// Create films
+			Film f1 = new Film("Harvard", "Film des années 60", 1962, c1);
+			Film f2 = new Film("Malcolm", "Film des années 80", 1980, c2);
+			Film f3 = new Film("Brusly", "Film des années 90", 1990, c3);
+
+			filmService.saveFilm(f1);
+			filmService.saveFilm(f2);
+			filmService.saveFilm(f3);
+			log.info("Created {} films", 3);
+
+			// Display all films
+			log.info("=== All Films ===");
+			filmService.getAllFilms().forEach(f -> log.info("{}", f));
+
+			log.info("Database initialization completed successfully!");
+		};
+	}
 }
